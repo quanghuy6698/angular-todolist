@@ -1,0 +1,77 @@
+.task-wrapper {
+  padding-top: 24px;
+}
+
+/* --- Task --- */
+.task {
+  border: 1px solid black;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  align-items: center;
+}
+
+/* --- Task label --- */
+.task__label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
+.task__check-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.task__name {
+  font-size: 24px;
+  padding-left: 8px;
+  font-weight: lighter;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- Task actions --- */
+.task__actions {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  flex-grow: 1;
+}
+
+.task__detail-btn-wrapper {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.task__detail-btn {
+  padding: 8px;
+  color: white;
+  background-color: #00bcd4;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.task__remove-btn-wrapper {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.task__remove-btn {
+  padding: 8px;
+  color: white;
+  background-color: #d9534f;
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* --- Task actions --- */
+.edit-form {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 24px;
+}
