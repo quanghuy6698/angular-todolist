@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ITaskModel, TaskDisplayModel } from 'src/app/models/task.model';
+import { TaskDisplayModel, ITaskModel } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
 
 @Component({
@@ -8,37 +8,28 @@ import { TaskService } from 'src/app/services/task.service';
   styleUrls: ['./todo-list.cmp.css'],
 })
 export class TodoListCmp {
-  public taskLst: ITaskModel[] = [];
-  public taskLstDisplay: Map<string, TaskDisplayModel> = new Map();
+  public taskLst: Map<string, TaskDisplayModel> = new Map();
   public isShowBulkAction: boolean = false;
   public txtSearch = '';
 
   constructor(private taskSvc: TaskService) {
     this.getTaskList();
-    this.resetTaskListDisplay();
     this.subscribeTaskListChange();
   }
 
   /**
-   * Get task list from local storage
-   *
-   */
-  getTaskList() {
-    this.taskLst = this.taskSvc.getTaskList();
-  }
-
-  /**
-   * Reset state of task list display map.
+   * Get task list from local storage.
    * Keep checked/show state of task which is not removed.
    */
-  resetTaskListDisplay() {
+  getTaskList() {
     let newTaskLstDisplay: Map<string, TaskDisplayModel> = new Map();
+    let doTaskLst = this.taskSvc.getTaskList();
 
-    this.taskLst.forEach((task) => {
+    doTaskLst.forEach((task) => {
       newTaskLstDisplay.set(task.key, this.convertTaskToDisplayObj(task));
     });
 
-    this.taskLstDisplay.forEach((task) => {
+    this.taskLst.forEach((task) => {
       let newTaskDisplay = newTaskLstDisplay.get(task.key);
       if (newTaskDisplay) {
         newTaskDisplay!.isChecked = task.isChecked;
@@ -46,7 +37,7 @@ export class TodoListCmp {
       }
     });
 
-    this.taskLstDisplay = newTaskLstDisplay;
+    this.taskLst = newTaskLstDisplay;
   }
 
   /**
@@ -57,7 +48,6 @@ export class TodoListCmp {
     this.taskSvc.bsTaskLstChange.subscribe((isChanged) => {
       if (isChanged) {
         this.getTaskList();
-        this.resetTaskListDisplay();
         this.taskSvc.resetNotifyTaskListChange();
       }
     });
@@ -66,9 +56,10 @@ export class TodoListCmp {
   /**
    * On select a task
    *
+   * @param notifyObj: Includes task key and task checked status
    */
   onSelectTask(notifyObj: any) {
-    this.taskLstDisplay.get(notifyObj.key)!.isChecked = notifyObj.isChecked;
+    this.taskLst.get(notifyObj.key)!.isChecked = notifyObj.isChecked;
     this.checkShowBulkAction();
   }
 
@@ -77,7 +68,7 @@ export class TodoListCmp {
    *
    */
   checkShowBulkAction() {
-    for (let [key, value] of this.taskLstDisplay) {
+    for (let [key, value] of this.taskLst) {
       if (value.isChecked) {
         this.isShowBulkAction = true;
         return;
@@ -93,7 +84,7 @@ export class TodoListCmp {
    */
   onClickRemoveBtn() {
     let removeKeyArr: string[] = [];
-    this.taskLstDisplay.forEach((task) => {
+    this.taskLst.forEach((task) => {
       if (task.isChecked) {
         removeKeyArr.push(task.key);
       }
@@ -104,7 +95,7 @@ export class TodoListCmp {
     }
 
     this.getTaskList();
-    this.resetTaskListDisplay();
+    this.checkShowBulkAction();
   }
 
   /**
@@ -113,13 +104,15 @@ export class TodoListCmp {
    */
   onSearchTask() {
     if (this.txtSearch) {
-      this.taskLstDisplay.forEach((task) => {
-        if (!task.name.includes(this.txtSearch)) {
+      this.taskLst.forEach((task) => {
+        if (task.name.includes(this.txtSearch)) {
+          task.isShow = true;
+        } else {
           task.isShow = false;
         }
       });
     } else {
-      this.taskLstDisplay.forEach((task) => {
+      this.taskLst.forEach((task) => {
         task.isShow = true;
       });
     }
@@ -127,6 +120,8 @@ export class TodoListCmp {
 
   /**
    * Convert task object to display object
+   *
+   * @return task display object
    */
   convertTaskToDisplayObj(task: ITaskModel): TaskDisplayModel {
     return new TaskDisplayModel(task.key, task.name, task.description, task.dueDate, task.priority, false, true);

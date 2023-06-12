@@ -59,7 +59,7 @@
   overflow: hidden;
 }
 
-/* --- Task actions --- */
+/* --- Tasks actions --- */
 .bulk-action__actions {
   display: grid;
   grid-template-columns: 50% 50%;

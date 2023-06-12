@@ -1,11 +1,11 @@
-export type PriorityType = 'low' | 'normal' | 'high';
+export type TaskPriorityType = 'low' | 'normal' | 'high';
 
 export interface ITaskModel {
   key: string;
   name: string;
   description: string;
   dueDate: string;
-  priority: PriorityType;
+  priority: TaskPriorityType;
 }
 
 export class TaskDisplayModel implements ITaskModel {
@@ -13,7 +13,7 @@ export class TaskDisplayModel implements ITaskModel {
   name: string;
   description: string;
   dueDate: string;
-  priority: PriorityType;
+  priority: TaskPriorityType;
   isChecked: boolean;
   isShow: boolean;
 
@@ -22,7 +22,7 @@ export class TaskDisplayModel implements ITaskModel {
     name: string,
     description: string,
     dueDate: string,
-    priority: PriorityType,
+    priority: TaskPriorityType,
     isChecked: boolean,
     isShow: boolean
   ) {
