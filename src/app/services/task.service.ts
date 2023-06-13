@@ -8,6 +8,11 @@ import { BehaviorSubject } from 'rxjs';
 export class TaskService {
   public bsTaskLstChange = new BehaviorSubject(false);
 
+  /**
+   * Get task list from local storage.
+   *
+   * @return task list
+   */
   getTaskList(): ITaskModel[] {
     let taskLst = localStorage.getItem('taskLst');
     if (taskLst) {
@@ -19,6 +24,10 @@ export class TaskService {
     }
   }
 
+  /**
+   * Add new task to task list.
+   *
+   */
   addNewTask(task: ITaskModel) {
     let doTaskLst = [];
     let taskLst = localStorage.getItem('taskLst');
@@ -34,6 +43,12 @@ export class TaskService {
     localStorage.setItem('taskLst', JSON.stringify(doTaskLst));
   }
 
+  /**
+   * Update a task.
+   *
+   * @param task: Task to update
+   * @param key: Task key in local storage
+   */
   updateTask(task: ITaskModel, key: string) {
     let taskLst = localStorage.getItem('taskLst');
     if (taskLst) {
@@ -45,6 +60,11 @@ export class TaskService {
     }
   }
 
+  /**
+   * Remove a task.
+   *
+   * @param key: Task key in local storage
+   */
   removeTask(key: string) {
     let taskLst = localStorage.getItem('taskLst');
     if (taskLst) {
@@ -56,6 +76,12 @@ export class TaskService {
     }
   }
 
+  /**
+   * Find index of task in task list.
+   *
+   * @param taskLst: Task list
+   * @param key: Task key to find index
+   */
   findIndexByTaskKey(taskLst: ITaskModel[], key: string): number {
     for (let task of taskLst) {
       if (task.key == key) {
@@ -65,6 +91,11 @@ export class TaskService {
     return -1;
   }
 
+  /**
+   * Sort task list by due date
+   *
+   * @param taskLst: Task list to sort
+   */
   sortTaskListByDueDate(taskLst: ITaskModel[]) {
     taskLst.sort((task1, task2) => {
       if (task1.dueDate < task2.dueDate) {
@@ -77,10 +108,18 @@ export class TaskService {
     });
   }
 
+  /**
+   * Notify the change to components
+   *
+   */
   notifyTaskListChange() {
     this.bsTaskLstChange.next(true);
   }
 
+  /**
+   * Reset notify change
+   *
+   */
   resetNotifyTaskListChange() {
     this.bsTaskLstChange.next(false);
   }
