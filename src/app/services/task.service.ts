@@ -98,10 +98,12 @@ export class TaskService {
    */
   sortTaskListByDueDate(taskLst: ITaskModel[]) {
     taskLst.sort((task1, task2) => {
-      if (task1.dueDate < task2.dueDate) {
+      let dueDate1 = new Date(task1.dueDate);
+      let dueDate2 = new Date(task2.dueDate);
+      if (dueDate1 < dueDate2) {
         return -1;
       }
-      if (task1.dueDate > task2.dueDate) {
+      if (dueDate1 > dueDate2) {
         return 1;
       }
       return 0;

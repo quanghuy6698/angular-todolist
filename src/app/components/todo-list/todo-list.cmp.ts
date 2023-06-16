@@ -49,6 +49,7 @@ export class TodoListCmp {
       if (isChanged) {
         this.getTaskList();
         this.taskSvc.resetNotifyTaskListChange();
+        this.checkShowBulkAction();
       }
     });
   }
