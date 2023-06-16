@@ -9,7 +9,7 @@
       (keyup)="onSearchTask()"
       [(ngModel)]="txtSearch"
     />
-    <ng-container *ngFor="let task of taskLst | keyvalue; let i=index">
+    <ng-container *ngFor="let task of taskLstOnTemplate">
       <task-cmp [task]="task.value" (notifyChecked)="onSelectTask($event)"></task-cmp>
     </ng-container>
   </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TaskDisplayModel, ITaskModel } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
 
@@ -9,6 +9,7 @@ import { TaskService } from 'src/app/services/task.service';
 })
 export class TodoListCmp {
   public taskLst: Map<string, TaskDisplayModel> = new Map();
+  public taskLstOnTemplate: any[] = [];
   public isShowBulkAction: boolean = false;
   public txtSearch = '';
 
@@ -38,6 +39,7 @@ export class TodoListCmp {
     });
 
     this.taskLst = newTaskLstDisplay;
+    this.taskLstOnTemplate = Array.from(this.taskLst, ([key, value]) => ({ key, value }));
   }
 
   /**
